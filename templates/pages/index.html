@@ -1,0 +1,135 @@
+{% extends "base.html"%}
+{% block body_content %}
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500&display=swap"
+    rel="stylesheet">
+
+<style>
+#fh1 {
+    margin-top: 20px;
+}
+
+#sub-nav {
+    display: flex;
+    justify-content: space-around;
+}
+
+#logout-btn {
+    background-color: rgb(50, 122, 255);
+}
+
+#fh3 {
+    text-align: left;
+    font-size: 19px;
+    padding-top: 15px;
+}
+
+@media screen and (max-width: 600px) {
+    #fh3 {
+        font-size: 15px;
+        text-align: left;
+    }
+}
+
+#fh6 {
+    text-align: right;
+    font-size: 15px;
+    /* padding-bottom: 20px; */
+    font-weight: normal;
+}
+
+@media screen and (max-width: 600px) {
+    #fh6 {
+        font-size: 15px;
+        text-align: right;
+        font-weight: normal;
+    }
+}
+
+#fh5 {
+    display: flex;
+    justify-content: space-around;
+    text-align: left;
+    font-size: 13px;
+    padding-top: 3px;
+    width: 90px;
+    color: rgb(223, 223, 223);
+    height: 20px;
+    font-weight: normal;
+    background-color: rgb(158, 158, 158);
+    border-radius: 20px;
+    /* padding-top: 20px; */
+    /* background-color: blue; */
+}
+
+@media screen and (max-width: 600px) {
+    #fh5 {
+        font-size: 10px;
+    }
+}
+
+a {
+    color: rgb(0, 132, 255);
+}
+
+a:hover {
+    text-decoration: none;
+    color: darkblue;
+
+}
+
+h5 {
+    color: rgb(133, 133, 133);
+}
+
+.profile-pic {
+    max-width: 30px;
+    max-height: 40px;
+    margin: 0 auto;
+    border-radius: 50%;
+    
+}
+
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="sub-nav">
+            <h1 id="fh1">Top Questions</h1>
+
+        </div>
+        <div class="list-question">
+            <div class="questions">
+                {% for enquiry in enquires %}
+                <div class="container"
+                    style="background: linear-gradient(to right, rgb(255, 226, 182), rgba(255, 166, 0, 0.027)); padding: 5px; box-shadow: rgba(0, 0, 0, 0.383) 0px 5px 5px 0px; border-radius: 15px;">
+                    <div id="title-sec" style="display: flex; align-items: center;">
+
+                        <h3 id="fh3"><a href="{% url 'stack:addanswer' enquiry.id %}" style="text-decoration: none;">{{enquiry.name}}</a></h3>
+                    </div>
+                    <hr>
+
+                    {% if enquiry.description|wordcount <= 10 %} <h6 id="fh6" style="text-align: left;">
+                        {{enquiry.description}}</h6>
+                        {% else %}
+                        <h6 id="fh6" style="text-align: left;">{{enquiry.description|truncatewords:10}} <a
+                                href="{% url 'stack:addanswer' enquiry.id %}">Read More</a></h6>
+                        {% endif %}
+                        
+                        <h6 id="fh6" style="font-size: 10px; font-style: italic; color: rgb(155, 155, 155);"><img class="profile-pic" src="{{enquiry.created_by.image.url}}"> Asked By:
+                            <a href="#">{{enquiry.created_by}}</a>&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; On:
+                            {{enquiry.created_at|timesince}}
+                        </h6>
+                        <h5 style="text-align: right; font-size: 12px; font-style: italic;">{{enquiry.tag}}</h5>
+                        
+                </div> <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+{% endblock %}

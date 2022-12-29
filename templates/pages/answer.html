@@ -1,0 +1,145 @@
+{% extends "base.html"%}
+{% load static %}
+{% block body_content %}
+{% load crispy_forms_tags %}
+
+<link
+    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500&display=swap"
+    rel="stylesheet">
+
+<style>
+    #fh1 {
+        margin-top: 20px;
+    }
+
+    #sub-nav {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    #logout-btn {
+        background-color: rgb(50, 122, 255);
+    }
+    #fh3 {
+        text-align: center;
+        font-size: 30px;
+        padding-top: 20px;
+        text-align: left;
+    }
+
+    @media screen and (max-width: 600px) {
+        #fh3 {
+            font-size: 17px;
+            text-align: left;
+        }
+    }
+
+    #fh6 {
+        text-align: left;
+        font-size: 15px;
+        /* padding-top: 20px; */
+        padding-bottom: 20px;
+        font-weight: normal;
+    }
+
+    @media screen and (max-width: 600px) {
+        #fh6 {
+            font-size: 15px;
+            text-align: left;
+            font-weight: normal;
+        }
+    }
+
+    #fh5 {
+        display: flex;
+        justify-content: space-around;
+        text-align: left;
+        font-size: 13px;
+        padding-top: 3px;
+        width: 90px;
+        color: rgb(223, 223, 223);
+        height: 20px;
+        font-weight: normal;
+        background-color: rgb(158, 158, 158);
+        border-radius: 20px;
+        /* padding-top: 20px; */
+        /* background-color: blue; */
+    }
+
+    @media screen and (max-width: 600px) {
+        #fh5 {
+            font-size: 10px;
+        }
+    }
+
+</style>
+</head>
+
+<body>
+    <div class="container">
+        <div id="sub-nav">
+        </div>
+        <div class="list-question">
+            <div class="questions">
+                <div class="container"
+                    style="background-color: rgba(255, 235, 209, 0.808); padding: 5px; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px 0px; border-radius: 20px;">
+                    <h3 id="fh3">{{questions.name}}</h3>
+                    <hr>
+                    <h6 id="fh6">{{ questions.description|safe }}</h6>
+                    <hr>
+               
+                    <br>
+                    <h2>Answers...</h2> <br><br><br>
+
+                    {% if not questions.answer_set.all %}
+                    <h3>No Answers yet... <a href="">Answer Question</a> </h3>
+                    {% else %}
+                    {% for comment in questions.answer_set.all %}
+                    <h3 style="font-weight: normal; font-size: 15px;">{{comment.name|safe}}</h3>
+                    <a href="{% url 'stack:reply' comment.id %}" style="font-size: x-small; text-decoration: none; float: right;">Reply</a>
+                    <h3 style="font-size: 10px;">Answered by: <i><a href="">{{comment.created_by}}</a> - On:
+                            {{comment.created_at|timesince}}</i></h3>
+                    <hr>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="w-75 mt-5 m-5">
+                        Add Comment</h3></a>
+                      </div>
+                      <div class="w-75 m-5">
+                        <form action="" class="signin-form" method="post" enctype="multipart/form-data">
+                    
+                          {% csrf_token %}
+                          {{ form|crispy }}
+                          <br>
+                          <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                          </div>
+                    
+                        </form>
+                      </div>
+
+
+
+
+
+
+                    <a class="btn btn-outline-primary" id="fa" href="#"
+                        style="text-decoration: none;">Answer Question</a>
+                    <a style="text-decoration: none; " class="btn btn-outline-success"
+                        href="#">&#x270E;</a>
+                    <a style="text-decoration: none; " class="btn btn-outline-danger"
+                        href="#">&#x2716;</a>
+                    <a style="text-decoration: none; " class="btn btn-outline-secondary"
+                        href="#">&#x21a9;</a>
+                </div> <br><br>
+                <!-- Answer Section -->
+
+            </div> <br>
+        </div>
+    </div>
+    <br>
+
+    </div>
+
+{% endblock %}

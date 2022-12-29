@@ -1,0 +1,5 @@
+{{questions.name}}
+
+{% for comment in questions.answer_set.all %}
+{{comment.name}}
+{% endfor %}
