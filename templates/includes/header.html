@@ -9,11 +9,11 @@
 
 
             {% if user.is_authenticated %}
-            <a href="" class="btn1">Logout</a>
+            <a href="{% url 'stack:logout' %}" class="btn2">Logout</a>
 
 
             {% else %}
-            <a href="" class="btn1">Log In</a>
+            <a href="{% url 'stack:signin' %}" class="btn2">Log In</a>
 
             {% endif %}
 

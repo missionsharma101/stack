@@ -30,8 +30,11 @@ class Question(BaseModel):
     name = models.CharField(max_length=255)
     description=models.TextField(null=True)
     tag = models.CharField(max_length=100)
-    upvote = models.IntegerField(blank=True, null=True)
-    downvote = models.IntegerField(blank=True, null=True)
+    upvote = models.IntegerField(blank=True, null=True,default=0)
+    downvote = models.IntegerField(blank=True, null=True,default=0)
+
+    class Meta:
+        ordering = ['-upvote','-created_at']
 
     def __str__(self) -> str:
         return self.created_by.username + "/ " + self.name[0:20]
@@ -40,8 +43,8 @@ class Question(BaseModel):
 class Answer(BaseModel):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
     name = models.TextField()
-    upvote = models.IntegerField(null=True, blank=True)
-    downvote = models.IntegerField(null=True, blank=True)
+    upvote = models.IntegerField(null=True, blank=True,default=0)
+    downvote = models.IntegerField(null=True, blank=True,default=0)
 
     def __str__(self) -> str:
         return self.question.name[0:20] + "/" + self.name[0:20]

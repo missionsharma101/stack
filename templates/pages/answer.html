@@ -8,6 +8,14 @@
     rel="stylesheet">
 
 <style>
+.avatar {
+  vertical-align: middle;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+}
+    
+
     #fh1 {
         margin-top: 20px;
     }
@@ -74,7 +82,7 @@
 
 </style>
 </head>
-
+<br>
 <body>
     <div class="container">
         <div id="sub-nav">
@@ -82,35 +90,47 @@
         <div class="list-question">
             <div class="questions">
                 <div class="container"
-                    style="background-color: rgba(255, 235, 209, 0.808); padding: 5px; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px 0px; border-radius: 20px;">
+                    style="background-color: rgba(183, 187, 201, 0.808); padding: 5px; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px 0px; border-radius: 20px;">
                     <h3 id="fh3">{{questions.name}}</h3>
                     <hr>
                     <h6 id="fh6">{{ questions.description|safe }}</h6>
                     <hr>
                
                     <br>
-                    <h2>Answers...</h2> <br><br><br>
+                    
 
                     {% if not questions.answer_set.all %}
-                    <h3>No Answers yet... <a href="">Answer Question</a> </h3>
+                    <small>No Answers yet... </small>
                     {% else %}
                     {% for comment in questions.answer_set.all %}
-                    <h3 style="font-weight: normal; font-size: 15px;">{{comment.name|safe}}</h3>
-                    <a href="{% url 'stack:reply' comment.id %}" style="font-size: x-small; text-decoration: none; float: right;">Reply</a>
-                    <h3 style="font-size: 10px;">Answered by: <i><a href="">{{comment.created_by}}</a> - On:
-                            {{comment.created_at|timesince}}</i></h3>
+                    <img  class="avatar"  style="float: right;" src="{{comment.created_by.image.url}}">
+                    <h3 style="font-weight: normal; font-size: 15px; color: #6777ef" >Answer: <br> {{comment.name|safe}} </h3>
+                    {% for i in comment.reply_set.all %}
+                    <div style="margin-left: 3%;">
+                     <small >Reply: <br> {{i.name}}</small>
+                     
+                    </div>
                     <hr>
                     {% endfor %}
-                    {% endif %}
 
-                    <div class="w-75 mt-5 m-5">
-                        Add Comment</h3></a>
-                      </div>
+                    <a href="{% url 'stack:reply' comment.id %}" style="font-size: x-small; text-decoration: none; float: right;">Reply</a>
+                    <h3 style="font-size: 10px;">Answered by: <i><a href="">{{comment.created_by}}</a> - On:
+                            {{comment.created_at|timesince}}</i> </h3>
+                            
+                    <hr>
+                  
+                    {% endfor %}
+                    {% endif %}
+                 
+
+
+                    
                       <div class="w-75 m-5">
+                        <p>Add Comment</p>
                         <form action="" class="signin-form" method="post" enctype="multipart/form-data">
                     
                           {% csrf_token %}
-                          {{ form|crispy }}
+                          Answer:<br>{{  form.name }}
                           <br>
                           <div class="form-group">
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -133,7 +153,7 @@
                     <a style="text-decoration: none; " class="btn btn-outline-secondary"
                         href="#">&#x21a9;</a>
                 </div> <br><br>
-                <!-- Answer Section -->
+              
 
             </div> <br>
         </div>

@@ -1,16 +1,15 @@
 from django.http import JsonResponse
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
-
 
 from django.contrib.auth.decorators import login_required
 
 
 def get_signup(request):
     if request.method == "POST":
-        form = UserForm(request.POST,request.FILES)
+        form = UserForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             messages.success(request, "Signup successfully")
@@ -37,23 +36,44 @@ def get_signin(request):
                 return redirect("/")
     else:
         form = AuthenticationForm()
-    context={
-        'form':form
-    }    
-    return render(request, "pages/signin.html",context)
+    context = {'form': form}
+    return render(request, "pages/signin.html", context)
+
 
 def get_logout(request):
     logout(request)
     messages.success(request, "Logout successfully")
     return redirect("stack:signin")
-    
-@login_required(login_url="stack:signin")
+
+
 def dashboard(request):
-    enquires=Question.objects.order_by("-created_at")
-    context={
-        'enquires':enquires,
+    # import pdb ;pdb.set_trace()
+    enquires = Question.objects.all()
+
+    tag = request.GET.get('tag', None)
+    search = request.GET.get('search-area', None)
+    id_value = request.POST.get('question', None)
+
+    if tag:
+        enquires = Question.objects.filter(tag=tag)
+    if search:
+        enquires = Question.objects.filter(name__icontains=search)
+
+    if 'Like' in request.POST:
+        question_value = Question.objects.get(id=id_value)
+        question_value.upvote += 1
+        question_value.save()
+
+    if 'dislike' in request.POST:
+        question_value = Question.objects.get(id=id_value)
+        question_value.downvote += 1
+        question_value.save()
+
+    context = {
+        'enquires': enquires,
     }
-    return render(request, "pages/index.html",context)
+    return render(request, "pages/index.html", context)
+
 
 def get_question(request):
     if request.method == "POST":
@@ -65,53 +85,46 @@ def get_question(request):
             messages.success(request, "Question Added successfully")
             return redirect("/")
     else:
-        form=QuestionForm()
-    context={
-        "form":form
-    }         
-    return render(request,"pages/question.html",context) 
+        form = QuestionForm()
+    context = {"form": form}
+    return render(request, "pages/question.html", context)
 
 
-def get_answer(request,pk):
-    questions=Question.objects.get(id=pk)
+def get_answer(request, pk):
+    questions = Question.objects.get(id=pk)
 
-    if request.method=="POST":
-        form=AnswerForm(request.POST)
+    if request.method == "POST":
+        form = AnswerForm(request.POST)
         form.is_valid()
-        data=form.save(commit=False)
-        data.created_by=request.user
-        data.question=questions
-
+        data = form.save(commit=False)
+        data.created_by = request.user
+        data.question = questions
+        import pdb
+        pdb.set_trace()
         form.save()
         messages.success(request, "Answer Added successfully")
-        return redirect('/')
+        return redirect('stack:addanswer', pk=pk)
     else:
-        form=AnswerForm()
-    context={
-        "form":form,
-        'questions':questions,
+        form = AnswerForm()
+    context = {
+        "form": form,
+        'questions': questions,
+    }
+    return render(request, "pages/answer.html", context)
 
-    }  
-    return render(request,"pages/answer.html",context)
 
-def get_reply(request,pk):
-    answers=Answer.objects.get(id=pk)
-    if request.method=="POST":
-        form=ReplyForm(request.POST)
+def get_reply(request, pk):
+    answers = Answer.objects.get(id=pk)
+    if request.method == "POST":
+        form = ReplyForm(request.POST)
         form.is_valid()
-        data=form.save(commit=False)
-        data.created_by=request.user
-        data.answer= answers
+        data = form.save(commit=False)
+        data.created_by = request.user
+        data.answer = answers
         form.save()
         messages.success(request, "Reply Added successfully")
         return redirect('/')
     else:
-        form=AnswerForm()
-    context={
-        "form":form,
-        'answers':answers
-    }  
-    return render(request,"pages/reply.html",context)
-
-
-
+        form = AnswerForm()
+    context = {"form": form, 'answers': answers}
+    return render(request, "pages/reply.html", context)

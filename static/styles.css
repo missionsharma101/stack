@@ -145,7 +145,7 @@ nav{
 }
 .nav-linkss li a::after{
     content:'';
-    background: #6777ef;
+    background: blue;
     width: 0;
     height: 2px;
     position: absolute;
@@ -159,7 +159,7 @@ nav{
     width: 100%;
 }
 .btn2{
-    background:#6777ef ;
+    background:blue ;
     color: #fff;
     padding: 10px 30px ;
     border-radius: 3px;

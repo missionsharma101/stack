@@ -20,7 +20,7 @@
                         <form action="" class="signin-form" method="post" enctype="multipart/form-data">
 
                             {% csrf_token %}
-                            {{ form|crispy }}
+                            Reply:<br>{{  form.name }}
                             <br>
                             <div class="form-group">
                                 <button type="submit" class="btn btn-primary">Submit</button>

@@ -22,10 +22,19 @@
                         <form action="" class="signin-form" method="post" enctype="multipart/form-data">
                             
                             {% csrf_token %}
-                            {{ form|crispy }}
+                            <div class="form-group mb-3">
+                                Question:<br>{{  form.name }}
+                            </div>
+                            <div class="form-group mb-3">
+                                Description:<br>{{  form.description }}
+                            </div>
+                            <div class="form-group mb-3">
+                                tag:<br>{{  form.tag }}
+                            </div>
                <br>
                 <div class="form-group">
-                    <button type="submit" class="form-control btn1 submit px-1">Add Question</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                   
                 </div>
                 
               </form>
