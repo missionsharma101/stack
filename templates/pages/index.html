@@ -89,6 +89,7 @@
         height: 30px;
         border-radius: 50%;
     }
+
 </style>
 </head>
 
@@ -131,24 +132,34 @@
                         {% endif %}
 
                         <h6 id="fh6"
-                            style="font-size: 10px; font-style: italic; color: rgb(155, 155, 155); float: left;"><img
-                                class="avatar" src="{{enquiry.created_by.image.url}}">
+                            style="font-size: 10px; font-style: italic; color: rgb(155, 155, 155); float: left;">
+
 
                             &nbsp;&nbsp; {{enquiry.created_by}}&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; On:
                             {{enquiry.created_at|timesince}}&nbsp;&nbsp;
                             <form action="" method="post">
                                 {% csrf_token %}
-                           <button type="submit" name="Like"> <a href=" " style="text-decoration: none;"><i style="font-size: small;" class="fa-solid fa-thumbs-up"></i>{{enquiry.upvote}}</a>
-                           </button>
-                           &nbsp; &nbsp;<button type="submit" name="dislike"><a href="" style="text-decoration: none;"><i style="font-size: small;" class="fa-solid fa-thumbs-down"></i>{{enquiry.downvote}}</a></button>
-                           <input type='hidden' value='{{ enquiry.id }}' name='question' />
-                        </form>
+                                <button type="submit " style="border:none;background:none; float: left; color: blue;"
+                                    name="Like">
+                                    <i style="font-size: small;"
+                                        class="fa-solid fa-thumbs-up"></i>&nbsp;<small>{{enquiry.upvote}}</small>
+                                </button>
+                                
+                                <button type="submit" style="border:none;background:none; float: left; color: blue;"
+                                    name="dislike"><i style="font-size: small;"
+                                        class="fa-solid fa-thumbs-down"></i>&nbsp;<small>{{enquiry.downvote}}</small></button>
+                                <input type='' value='{{ enquiry.id }}' name='question' hidden />
+                            </form>
 
                         </h6>
+                        <br>
+
 
 
                         <h5 style="text-align: right; font-size: 12px; font-style: italic;" class="mb-3"><a
-                                href="{%url 'stack:index'%}?tag={{enquiry.tag}}">{{enquiry.tag}}</a></h5>
+                                href="{%url 'stack:index'%}?tag={{enquiry.tag}}"> {{enquiry.tag}}</a>
+                            <img class="avatar" src="{{enquiry.created_by.image.url}}" style="margin-left: 5px;">
+                        </h5>
 
 
                 </div> <br>

@@ -1,0 +1,71 @@
+{% extends "base.html"%}
+{%load crispy_forms_tags %} 
+
+{% load static %}
+
+{% block body_content %}
+
+
+
+<style>
+	.profile-pic{
+		max-width: 200px;
+		max-height:200px;
+		margin: 0 auto;
+		border-radius: 50%;
+	}
+</style>
+
+<br>
+<div class="row">
+	<div class="col-md-3">
+		<div class="card card-body">
+			<a class="btn btn-warning" href="/"> &#8592; Back to Profile</a>
+			<hr>
+			<h3 style="text-align: center">Account Settings</h3>
+			<hr>
+			<img class="profile-pic" src="{{user.image.url}}" >
+		
+		</div>
+	</div>
+	<div class="col-md-9">
+		<div class="card card-body">
+			
+			<form method="POST" action="" enctype="multipart/form-data">
+				{% csrf_token %}
+			
+				{{ form|crispy }}
+
+<br>
+		
+			<input class="btn btn-primary" type="submit" value="Update" name="Update Information">
+			</form>
+		</div>
+	</div>
+</div>
+<br>
+<br>
+
+<div class="card m-5">
+	<div class="card-header text-center" >
+	  User Question
+	</div>
+	{% for question in get_question %}
+	<div class="card-body ">
+	  <h5 class="card-title">{{question.name}}</h5>
+	  <small class="card-text">{{question.description}}</small><br><br>
+  <a style="text-decoration: none; " class="btn btn-outline-success"
+	  href="{% url 'stack:question-update' question.id %}">&#x270E;</a>
+  <a style="text-decoration: none; " class="btn btn-outline-danger"
+	  href="{% url 'stack:questiondelete' question.id %}">&#x2716;</a>
+  <a style="text-decoration: none; " class="btn btn-outline-secondary"
+	  href="/">&#x21a9;</a>
+	</div>
+	<hr>
+	{% endfor %}
+  </div>
+	
+
+
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html"%}
+
+{% load static %}
+
+{% block body_content %}
+{% load crispy_forms_tags %}
+<br>
+<section class="ftco-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-10">
+
+                <div class="wrap d-md-flex">
+                    <div class="login-wrap p-4 p-lg-5">
+                        <h2 class="heading-section mb-4">Question update</h2>
+                
+
+                        <form action="" class="signin-form" method="post" enctype="multipart/form-data">
+
+                            {% csrf_token %}
+                            {{ form|crispy }}
+                            <br>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+
+                        </form>
+                        <br>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

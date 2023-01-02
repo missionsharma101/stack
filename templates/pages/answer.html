@@ -3,18 +3,14 @@
 {% block body_content %}
 {% load crispy_forms_tags %}
 
-<link
-    href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;1,100;1,200;1,300;1,400;1,500&display=swap"
-    rel="stylesheet">
 
 <style>
-.avatar {
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-}
-    
+    .avatar {
+        vertical-align: middle;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+    }
 
     #fh1 {
         margin-top: 20px;
@@ -28,6 +24,7 @@
     #logout-btn {
         background-color: rgb(50, 122, 255);
     }
+
     #fh3 {
         text-align: center;
         font-size: 30px;
@@ -83,83 +80,102 @@
 </style>
 </head>
 <br>
+
 <body>
     <div class="container">
         <div id="sub-nav">
         </div>
         <div class="list-question">
             <div class="questions">
-                <div class="container"
-                    style="background-color: rgba(183, 187, 201, 0.808); padding: 5px; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px 0px; border-radius: 20px;">
-                    <h3 id="fh3">{{questions.name}}</h3>
-                    <hr>
-                    <h6 id="fh6">{{ questions.description|safe }}</h6>
-                    <hr>
-               
-                    <br>
-                    
+                <div class="card w-80 mt-5 m-5 ">
 
-                    {% if not questions.answer_set.all %}
-                    <small>No Answers yet... </small>
-                    {% else %}
-                    {% for comment in questions.answer_set.all %}
-                    <img  class="avatar"  style="float: right;" src="{{comment.created_by.image.url}}">
-                    <h3 style="font-weight: normal; font-size: 15px; color: #6777ef" >Answer: <br> {{comment.name|safe}} </h3>
-                    {% for i in comment.reply_set.all %}
-                    <div style="margin-left: 3%;">
-                     <small >Reply: <br> {{i.name}}</small>
-                     
+                    <div class="card-body m-5">
+                        <div class="container"
+                            style="background-color: rgba(183, 187, 201, 0.808); padding: 5px; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px 0px; border-radius: 10px;">
+
+                            <h3 id="fh3">{{questions.name}}</h3>
+                            <h6 id="fh6">{{ questions.description|safe }}</h6>
+                        </div>
+                        <br>
+                        <div class="answer">
+
+
+                            {% if not questions.answer_set.all %}
+                            <small>No Answers yet... </small>
+                            {% else %}
+                            {% for comment in questions.answer_set.all %}
+                            <div class="w-100 mt-5  "
+                                style="background-color: rgba(183, 187, 201, 0.808); padding: 5px; box-shadow: rgba(0, 0, 0, 0.15) 0px 5px 5px 0px; border-radius: 10px;">
+                                <div class="card-body">
+                                    <div class="answer">
+                                        <img class="avatar" style="float:right;" src="{{comment.created_by.image.url}}">
+                                        <h3>Answer:</h3>
+                                        <h2 style="font-weight: normal; font-size: 15px; text-align: justify; color:blue; ">
+                                            {{comment.name|safe}}
+                                        </h2>
+                                    </div>
+                                    <hr>
+                                    {% for i in comment.reply_set.all %}
+                                    <div class="reply m-4">
+                                        <h5>Reply:</h5>
+                                        <h2 style="margin-left:3%; font-size: 15px; font-weight: normal; text-align: justify; color:blue; "> {{i.name}}</h2>
+                                        <hr>
+                                            <h3 style="font-size: 10px;">Answered by: <i><a href="">{{i.created_by}}</a> -
+                                            On:
+                                            {{i.created_at|timesince}}</i> </h3>
+                                    </div>
+                                    <hr>
+                                    {% endfor %}
+
+                                    <a href="{% url 'stack:reply' comment.id %}"
+                                        style="font-size: x-small; text-decoration: none; float: right;">Reply</a>
+                                    <h3 style="font-size: 10px;">Answered by: <i><a href="">{{comment.created_by}}</a> -
+                                            On:
+                                            {{comment.created_at|timesince}}</i> </h3>
+                                    <form action="" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit " style="border:none;background:none; float: left; color: blue;"
+                                            name="Like">
+                                            <i style="font-size: small;"
+                                                class="fa-solid fa-thumbs-up"></i>&nbsp;<small>{{comment.upvote}}</small>
+                                        </button>
+                                        &nbsp; &nbsp;
+                                        <button type="submit" style="border:none;background:none; color: blue;"
+                                            name="dislike"><i style="font-size: small;"
+                                                class="fa-solid fa-thumbs-down"></i>&nbsp;<small>{{comment.downvote}}</small></button>
+                                        <input type='' value='{{ comment.id }}' name='answer' hidden />
+                                    </form>
+                                </div>
+                            </div>
+                            <hr>
+
+                            {% endfor %}
+                            {% endif %}
+
+
+
+
+                            <div class="w-75 m-5">
+                                <p>Add Comment</p>
+                                <form action="" class="signin-form" method="post" enctype="multipart/form-data">
+
+                                    {% csrf_token %}
+                                    Answer:<br>{{ form.name }}
+                                    <br>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+
+                                </form>
+                            </div>
+
+                        </div>
                     </div>
-                    <hr>
-                    {% endfor %}
-
-                    <a href="{% url 'stack:reply' comment.id %}" style="font-size: x-small; text-decoration: none; float: right;">Reply</a>
-                    <h3 style="font-size: 10px;">Answered by: <i><a href="">{{comment.created_by}}</a> - On:
-                            {{comment.created_at|timesince}}</i> </h3>
-                            
-                    <hr>
-                  
-                    {% endfor %}
-                    {% endif %}
-                 
-
-
-                    
-                      <div class="w-75 m-5">
-                        <p>Add Comment</p>
-                        <form action="" class="signin-form" method="post" enctype="multipart/form-data">
-                    
-                          {% csrf_token %}
-                          Answer:<br>{{  form.name }}
-                          <br>
-                          <div class="form-group">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                          </div>
-                    
-                        </form>
-                      </div>
-
-
-
-
-
-
-                    <a class="btn btn-outline-primary" id="fa" href="#"
-                        style="text-decoration: none;">Answer Question</a>
-                    <a style="text-decoration: none; " class="btn btn-outline-success"
-                        href="#">&#x270E;</a>
-                    <a style="text-decoration: none; " class="btn btn-outline-danger"
-                        href="#">&#x2716;</a>
-                    <a style="text-decoration: none; " class="btn btn-outline-secondary"
-                        href="#">&#x21a9;</a>
-                </div> <br><br>
-              
-
-            </div> <br>
+                </div>
+            </div>
         </div>
-    </div>
-    <br>
+        <br>
 
     </div>
 
-{% endblock %}
+    {% endblock %}

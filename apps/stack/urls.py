@@ -12,6 +12,12 @@ urlpatterns = [
     path("addquestion",get_question,name="addquestion"),
     path("addanswer/<int:pk>",get_answer,name="addanswer"),
     path("reply/<int:pk>",get_reply,name="reply"),
+    path("userprofile/<int:pk>",profile,name="userprofile"),
+    path("questiondelete/<int:pk>",delete_question,name="questiondelete"),
+    path("question-update/<int:pk>",question_update,name="question-update"),
+
+
+
 
 
 ]

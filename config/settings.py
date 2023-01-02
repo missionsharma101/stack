@@ -79,38 +79,29 @@ WSGI_APPLICATION = 'config.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'stackoverflow',
+#         'USER': 'postgres',
+#         'PASSWORD': 'mission@',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432'
+#     }
+# }
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'stackoverflow',
-        'USER': 'postgres',
-        'PASSWORD': 'mission@',
-        'HOST': '127.0.0.1',
-        'PORT': '5432'
+        'HOST':'localhost',
+        'PORT': 5432,
+        'USER':'postgres',
+        'PASSWORD':'postgres'
     }
 }
 
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'stackoverflow',
-#         'HOST':'localhost',
-#         'PORT': 5432,
-#         'USER':'postgres',
-#         'PASSWORD':'postgres'
-#     }
-# }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'stackoverflow',
-#         'HOST': 'localhost',
-#         'PORT': 5432,
-#         'USER': 'postgres',
-#         'PASSWORD': 'postgres',
-#     }
-# }
 AUTH_USER_MODEL = 'stack.User'
 
 # Password validation
