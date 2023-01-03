@@ -26,7 +26,7 @@ class ReplyForm(forms.ModelForm):
 class UserUpdateForm(forms.ModelForm):
     class Meta:
         model=User
-        fields=["username","fullname","address","phone"]        
+        fields=["username","fullname","address","image","phone"]        
 
 class QuestionUpdateForm(forms.ModelForm):
     class Meta:

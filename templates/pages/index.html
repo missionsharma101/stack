@@ -124,7 +124,7 @@
                     </div>
                     <hr>
 
-                    {% if enquiry.description|wordcount <= 10 %} <h6 id="fh6" style="text-align: left;">
+                    {% if enquiry.description|wordcount <= 100 %} <h6 id="fh6" style="text-align: left;">
                         {{enquiry.description}}</h6>
                         {% else %}
                         <h6 id="fh6" style="text-align: left;">{{enquiry.description|truncatewords:10}} <a
@@ -137,21 +137,23 @@
 
                             &nbsp;&nbsp; {{enquiry.created_by}}&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;&nbsp; On:
                             {{enquiry.created_at|timesince}}&nbsp;&nbsp;
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <button type="submit " style="border:none;background:none; float: left; color: blue;"
-                                    name="Like">
-                                    <i style="font-size: small;"
-                                        class="fa-solid fa-thumbs-up"></i>&nbsp;<small>{{enquiry.upvote}}</small>
-                                </button>
-                                
-                                <button type="submit" style="border:none;background:none; float: left; color: blue;"
-                                    name="dislike"><i style="font-size: small;"
-                                        class="fa-solid fa-thumbs-down"></i>&nbsp;<small>{{enquiry.downvote}}</small></button>
-                                <input type='' value='{{ enquiry.id }}' name='question' hidden />
-                            </form>
+                            <hr>
+                                              <form action="" method="post">
+                            {% csrf_token %}
+                            <button type="submit " style="border:none;background:none; float: left; color: blue; margin-right: 5%;"
+                                name="Like">
+                                <i style="font-size: small;"
+                                    class="fa-solid fa-thumbs-up"></i>&nbsp;<small>{{enquiry.upvote}}</small>
+                            </button>
+                            
+                            <button type="submit" style="border:none;background:none; float: left; color: blue;"
+                                name="dislike"><i style="font-size: small;"
+                                    class="fa-solid fa-thumbs-down"></i>&nbsp;<small>{{enquiry.downvote}}</small></button>
+                            <input type='' value='{{ enquiry.id }}' name='question' hidden />
+                        </form>
 
                         </h6>
+
                         <br>
 
 

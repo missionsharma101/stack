@@ -115,15 +115,17 @@
                                         </h2>
                                     </div>
                                     <hr>
+                                    <h5>Reply:</h5>
+                                    
                                     {% for i in comment.reply_set.all %}
-                                    <div class="reply m-4">
-                                        <h5>Reply:</h5>
+                                    <div class="reply m-4 mb-5">
                                         <h2 style="margin-left:3%; font-size: 15px; font-weight: normal; text-align: justify; color:blue; "> {{i.name}}</h2>
-                                        <hr>
-                                            <h3 style="font-size: 10px;">Answered by: <i><a href="">{{i.created_by}}</a> -
+                                 
+                                            <h3  style="font-size: 10px; float:right;"><i><a href="">{{i.created_by}}</a> -
                                             On:
                                             {{i.created_at|timesince}}</i> </h3>
                                     </div>
+                                    
                                     <hr>
                                     {% endfor %}
 

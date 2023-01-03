@@ -9,7 +9,7 @@ class User(AbstractUser):
     email = models.EmailField(max_length=50, unique=True)
     address = models.CharField(max_length=30)
     phone = models.CharField(max_length=15)
-    image = models.FileField(upload_to='uploads/%Y/%m/%d', null=True)
+    image = models.FileField(upload_to='uploads/%Y/%m/%d', null=True,default="uploads/image.jpg")
     create_at = models.DateTimeField(auto_now_add=True, null=True)
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
@@ -32,6 +32,7 @@ class Question(BaseModel):
     tag = models.CharField(max_length=100)
     upvote = models.IntegerField(blank=True, null=True,default=0)
     downvote = models.IntegerField(blank=True, null=True,default=0)
+    user_reaction = models.ManyToManyField(User, related_name='react')
 
     class Meta:
         ordering = ['-upvote','-created_at']
@@ -45,6 +46,7 @@ class Answer(BaseModel):
     name = models.TextField()
     upvote = models.IntegerField(null=True, blank=True,default=0)
     downvote = models.IntegerField(null=True, blank=True,default=0)
+    
 
     def __str__(self) -> str:
         return self.question.name[0:20] + "/" + self.name[0:20]

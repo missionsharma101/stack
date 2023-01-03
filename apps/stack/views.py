@@ -50,8 +50,7 @@ def get_logout(request):
 def dashboard(request):
     # import pdb ;pdb.set_trace()
     enquires = Question.objects.annotate(
-        total_votes=Sum(F("upvote") + F("downvote"))
-    ).order_by("-total_votes")
+        total_votes=Sum(F("upvote") + F("downvote"))).order_by("-total_votes")
 
     tag = request.GET.get("tag", None)
     search = request.GET.get("search-area", None)
@@ -62,10 +61,15 @@ def dashboard(request):
     if search:
         enquires = Question.objects.filter(name__icontains=search)
 
-    if "Like" in request.POST:
+
+
+    if 'Like' in request.POST:
         question_value = Question.objects.get(id=id_value)
-        question_value.upvote += 1
-        question_value.save()
+        question_user_reaction = question_value.user_reaction.all()
+        if 'Like' in request.POST and (request.user not in question_user_reaction):
+            question_value.upvote += 1
+            question_value.user_reaction.add(request.user)
+            question_value.save()
 
     if "dislike" in request.POST:
         question_value = Question.objects.get(id=id_value)
@@ -76,7 +80,7 @@ def dashboard(request):
         "enquires": enquires,
     }
     return render(request, "pages/index.html", context)
-
+@login_required(login_url="stack:signin")
 
 def get_question(request):
     if request.method == "POST":
@@ -92,7 +96,7 @@ def get_question(request):
     context = {"form": form}
     return render(request, "pages/question.html", context)
 
-
+@login_required(login_url="stack:signin")
 def get_answer(request, pk):
 
     questions = Question.objects.get(id=pk)
@@ -125,10 +129,9 @@ def get_answer(request, pk):
     }
     return render(request, "pages/answer.html", context)
 
-
+@login_required(login_url="stack:signin")
 def get_reply(request, pk):
     answers = Answer.objects.get(id=pk)
-    id_value = request.POST.get("question", None)
 
     if request.method == "POST":
         form = ReplyForm(request.POST)
@@ -138,14 +141,14 @@ def get_reply(request, pk):
         data.answer = answers
         form.save()
         messages.success(request, "Reply Added successfully")
-        return redirect("stack:reply", pk=pk)
+        return redirect("stack:reply", pk=pk )
 
     else:
         form = AnswerForm()
     context = {"form": form, "answers": answers}
     return render(request, "pages/reply.html", context)
 
-
+@login_required(login_url="stack:signin")
 def profile(request, pk):
     get_question = Question.objects.filter(created_by__id=pk)
     if request.method == "POST":
@@ -159,18 +162,22 @@ def profile(request, pk):
         get_user = User.objects.get(id=pk)
         form = UserUpdateForm(instance=get_user)
 
-    context = {"get_user": get_user, "form": form, "get_question": get_question}
+    context = {
+        "get_user": get_user,
+        "form": form,
+        "get_question": get_question
+    }
 
     return render(request, "pages/userprofil.html", context)
 
-
+@login_required(login_url="stack:signin")
 def delete_question(request, pk):
     delete_user = Question.objects.filter(id=pk)
     delete_user.delete()
     messages.success(request, "Question Delete")
     return redirect("stack:userprofile", pk=pk)
 
-
+@login_required(login_url="stack:signin")
 def question_update(request, pk):
     if request.method == "POST":
         update_question = Question.objects.get(id=pk)
