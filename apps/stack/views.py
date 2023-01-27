@@ -63,19 +63,21 @@ def dashboard(request):
 
 
 
-    if 'Like' in request.POST:
+    if 'Like' in request.POST and request.user.is_authenticated:
         question_value = Question.objects.get(id=id_value)
         question_user_reaction = question_value.user_reaction.all()
         if 'Like' in request.POST and (request.user not in question_user_reaction):
             question_value.upvote += 1
             question_value.user_reaction.add(request.user)
             question_value.save()
+       
 
-    if "dislike" in request.POST:
+    if "dislike" in request.POST and request.user.is_authenticated:
         question_value = Question.objects.get(id=id_value)
         question_value.downvote += 1
         question_value.save()
 
+    
     context = {
         "enquires": enquires,
     }
@@ -141,7 +143,8 @@ def get_reply(request, pk):
         data.answer = answers
         form.save()
         messages.success(request, "Reply Added successfully")
-        return redirect("stack:reply", pk=pk )
+        id_que=answers.question.id
+        return redirect("stack:addanswer", pk=id_que )
 
     else:
         form = AnswerForm()
